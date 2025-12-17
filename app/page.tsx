@@ -19,14 +19,14 @@ import { MailIcon, MapPinIcon, PhoneIcon } from "lucide-react";
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-background text-foreground">
+    <main className="min-h-screen text-foreground">
       {/* <CustomCursor /> */}
       <SmartCursor />
       <Navigation />
       <div
         className={cn(
           "mx-auto max-w-5xl lg:border-x border-border",
-          "dark:bg-[radial-gradient(35%_80%_at_30%_0%,--theme(--color-foreground/.05),transparent)]",
+          "dark:bg-[radial-gradient(35%_80%_at_30%_0%,rgba(255,255,255,0.05),transparent),radial-gradient(35%_80%_at_70%_100%,rgba(255,255,255,0.03),transparent)]",
         )}
       >
         <HeroSection />
@@ -36,6 +36,8 @@ export default function Home() {
         <GitHubSection />
         <CertificatesSection />
         <ContactCard
+          id="contact"
+          className="scroll-mt-24"
 					contactInfo={[
 						{
 							icon: MailIcon,

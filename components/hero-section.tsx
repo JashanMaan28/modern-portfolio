@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { useEffect, useState } from "react"
 import { AnimatedLine } from "@/components/animated-line"
+import { CornerBracket } from "@/components/geometric-accents"
 
 export function HeroSection() {
   const [mounted, setMounted] = useState(false)
@@ -20,10 +21,12 @@ export function HeroSection() {
   }
 
   return (
-    <section id="hero" className="relative pt-16">
+    <section id="hero" className="relative pt-16 scroll-mt-24">
       <AnimatedLine position="top" progress={0} />
       <div className="grid grid-cols-6 gap-6 p-4">
-        <div className="col-span-6 flex flex-col gap-4 py-16 md:py-24">
+        <div className="col-span-6 flex flex-col gap-4 py-16 md:py-24 relative">
+          <CornerBracket position="top-left" className="-top-4 -left-4" delay={500} />
+          <CornerBracket position="bottom-right" className="-bottom-4 -right-4" delay={700} />
           <h1
             className={`text-4xl font-bold tracking-tight text-foreground md:text-6xl lg:text-7xl transition-all duration-700 ease-out ${
               mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"

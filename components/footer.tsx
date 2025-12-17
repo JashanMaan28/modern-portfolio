@@ -74,7 +74,7 @@ export function Footer() {
 					"dark:bg-[radial-gradient(35%_80%_at_30%_0%,--theme(--color-foreground/.1),transparent)]"
 				)}
 			>
-				<div className="absolute inset-x-0 h-px w-full bg-border" />
+				<div className="absolute left-1/2 -translate-x-1/2 top-0 h-px bg-border pointer-events-none -z-10" style={{ width: "100vw" }} />
 				<div className="grid max-w-5xl grid-cols-6 gap-6 p-4">
 					<div className="col-span-6 flex flex-col gap-4 pt-5 md:col-span-4">
 						<a className="w-max" href="#">
@@ -134,7 +134,7 @@ export function Footer() {
 						</div>
 					</div>
 				</div>
-				<div className="absolute inset-x-0 h-px w-full bg-border" />
+				<div className="absolute left-1/2 -translate-x-1/2 h-px bg-border pointer-events-none" style={{ width: "100vw" }} />
 				<div className="flex max-w-4xl flex-col justify-between gap-2 py-4">
 					<p className="text-center font-light text-muted-foreground text-sm">
 						&copy; {new Date().getFullYear()} Jashanpreet Singh, All rights reserved

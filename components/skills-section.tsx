@@ -3,6 +3,7 @@
 import { Badge } from "@/components/ui/badge"
 import { useSectionReveal } from "@/hooks/use-section-reveal"
 import { AnimatedLine } from "@/components/animated-line"
+import { Crosshair } from "@/components/geometric-accents"
 
 const skills = [
   "TypeScript",
@@ -23,14 +24,15 @@ export function SkillsSection() {
   const { ref, isVisible } = useSectionReveal()
 
   return (
-    <section ref={ref} id="skills" className="relative">
+    <section ref={ref} id="skills" className="relative scroll-mt-24">
       <div className="grid grid-cols-6 gap-6 p-4">
         <div
-          className={`col-span-6 md:col-span-2 pt-4 transition-all duration-500 ease-out ${
+          className={`col-span-6 md:col-span-2 pt-4 transition-all duration-500 ease-out flex items-center gap-2 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-1.5"
           }`}
         >
-          <span className="text-muted-foreground text-xs uppercase tracking-widest">Tech Stack</span>
+          <Crosshair className="relative" delay={200} />
+          <span className="text-muted-foreground text-xs uppercase tracking-widest pl-6">Tech Stack</span>
         </div>
         <div className="col-span-6 md:col-span-4 py-4">
           <div className="flex flex-wrap gap-2">

@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ArrowUpRight } from "lucide-react"
 import { useSectionReveal } from "@/hooks/use-section-reveal"
 import { AnimatedLine } from "@/components/animated-line"
+import { Crosshair } from "@/components/geometric-accents"
 
 const projects = [
   {
@@ -27,14 +28,15 @@ export function ProjectsSection() {
   const { ref, isVisible } = useSectionReveal(0.1)
 
   return (
-    <section ref={ref} id="projects" className="relative">
+    <section ref={ref} id="projects" className="relative scroll-mt-24">
       <div className="grid grid-cols-6 gap-6 p-4">
         <div
-          className={`col-span-6 pt-4 transition-all duration-500 ease-out ${
+          className={`col-span-6 pt-4 transition-all duration-500 ease-out flex items-center gap-2 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-1.5"
           }`}
         >
-          <span className="text-muted-foreground text-xs uppercase tracking-widest">Projects</span>
+          <Crosshair className="relative" delay={200} />
+          <span className="text-muted-foreground text-xs uppercase tracking-widest pl-6">Projects</span>
         </div>
         {projects.map((project, index) => (
           <Card

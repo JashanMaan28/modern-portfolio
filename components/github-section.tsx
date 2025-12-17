@@ -56,7 +56,7 @@ export function GitHubSection() {
   }, [isVisible, loading])
 
   const getCellColor = (count: number) => {
-    if (count === 0) return "bg-muted/50"
+    if (count === 0) return "bg-slate-300/30"
     if (count < 3) return "bg-emerald-700/60"
     if (count < 6) return "bg-emerald-600/80"
     return "bg-emerald-500"
@@ -73,7 +73,7 @@ export function GitHubSection() {
   const contributions = githubData?.contributions.slice(-364) || []
 
   return (
-    <section ref={ref} id="github" className="relative">
+    <section ref={ref} id="github" className="relative scroll-mt-24">
       <div className="grid grid-cols-6 gap-6 p-4">
         <div
           className={`col-span-6 md:col-span-2 pt-4 transition-all duration-500 ease-out ${

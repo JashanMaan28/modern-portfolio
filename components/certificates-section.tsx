@@ -14,7 +14,7 @@ export function CertificatesSection() {
   const { ref, isVisible } = useSectionReveal()
 
   return (
-    <section ref={ref} id="certificates" className="relative">
+    <section ref={ref} id="certificates" className="relative scroll-mt-24">
       <div className="grid grid-cols-6 gap-6 p-4">
         <div
           className={`col-span-6 md:col-span-2 pt-4 transition-all duration-500 ease-out ${

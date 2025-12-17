@@ -1,5 +1,26 @@
 import type React from "react";
 
+export const JSLogo = (props: React.ComponentProps<"svg">) => (
+	<svg
+		viewBox="0 0 24 24"
+		fill="currentColor"
+		xmlns="http://www.w3.org/2000/svg"
+		{...props}
+	>
+		<text
+			x="12"
+			y="13"
+			dominantBaseline="middle"
+			textAnchor="middle"
+			fontSize="14"
+			fontWeight="bold"
+			style={{ fontFamily: "var(--font-sans)" }}
+		>
+			JS
+		</text>
+	</svg>
+);
+
 export const LogoIcon = (props: React.ComponentProps<"svg">) => (
 	<svg fill="currentColor" viewBox="0 0 24 24" {...props}>
 		<path
