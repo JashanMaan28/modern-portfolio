@@ -1,10 +1,10 @@
 "use client"
 
 import * as React from "react"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback, useRef } from "react"
 import { cn } from "@/lib/utils"
 import { useTheme } from "next-themes"
-import { Menu } from "lucide-react"
+import { Menu, Moon, Sun } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   Sheet,
@@ -17,6 +17,7 @@ import { JSLogo } from "@/components/logo"
 const navItems = [
   { id: "hero", label: "Home" },
   { id: "about", label: "About" },
+  { id: "experience", label: "Experience" },
   { id: "projects", label: "Projects" },
   { id: "skills", label: "Skills" },
   { id: "github", label: "GitHub" },
@@ -28,87 +29,91 @@ export function Navigation() {
   const [activeSection, setActiveSection] = useState("hero")
   const [isScrolled, setIsScrolled] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
-  const { theme, setTheme } = useTheme()
+  const { theme, setTheme, resolvedTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
+  const isScrollingRef = useRef(false)
+  const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   useEffect(() => {
     setMounted(true)
   }, [])
 
+  // Improved scroll detection with proper throttling via IntersectionObserver
+  useEffect(() => {
+    const observerOptions = {
+      root: null,
+      rootMargin: "-20% 0px -70% 0px", // Triggers when section is in upper portion of viewport
+      threshold: 0,
+    }
+
+    const observerCallback: IntersectionObserverCallback = (entries) => {
+      // Don't update during programmatic scroll
+      if (isScrollingRef.current) return
+
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setActiveSection(entry.target.id)
+        }
+      })
+    }
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions)
+
+    // Observe all sections
+    navItems.forEach((item) => {
+      const element = document.getElementById(item.id)
+      if (element) {
+        observer.observe(element)
+      }
+    })
+
+    return () => observer.disconnect()
+  }, [])
+
+  // Handle scroll state for navbar background
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20)
-
-      // Throttle section detection
-      if (window.scrollY % 10 !== 0) return
-
-      const sections = navItems.map((item) => document.getElementById(item.id))
-      const scrollPosition = window.scrollY + 100
-
-      for (let i = sections.length - 1; i >= 0; i--) {
-        const section = sections[i]
-        if (section && section.offsetTop <= scrollPosition) {
-          setActiveSection(navItems[i].id)
-          break
-        }
-      }
     }
 
     window.addEventListener("scroll", handleScroll, { passive: true })
+    handleScroll() // Check initial state
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
-  const scrollToSection = (id: string) => {
+  const scrollToSection = useCallback((id: string) => {
     const element = document.getElementById(id)
     if (element) {
+      // Set active immediately on click
+      setActiveSection(id)
+      isScrollingRef.current = true
+
+      // Clear any existing timeout
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current)
+      }
+
       element.scrollIntoView({ behavior: "smooth" })
       setIsOpen(false)
+
+      // Re-enable observer after scroll animation completes
+      scrollTimeoutRef.current = setTimeout(() => {
+        isScrollingRef.current = false
+      }, 1000)
     }
-  }
+  }, [])
 
-  const toggleTheme = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    const newTheme = theme === "dark" ? "light" : "dark"
+  const toggleTheme = useCallback(() => {
+    setTheme(resolvedTheme === "dark" ? "light" : "dark")
+  }, [resolvedTheme, setTheme])
 
-    // View Transition API - experimental, fallback to instant switch if unsupported
-    const doc = document as Document & {
-      startViewTransition?: (callback: () => void) => { ready: Promise<void> }
-    }
-
-    if (!doc.startViewTransition) {
-      setTheme(newTheme)
-      return
-    }
-
-    const target = e.currentTarget
-    const { top, left, width, height } = target.getBoundingClientRect()
-    const x = left + width / 2
-    const y = top + height / 2
-    const right = window.innerWidth - left
-    const bottom = window.innerHeight - top
-    const maxRadius = Math.hypot(Math.max(left, right), Math.max(top, bottom))
-
-    const transition = doc.startViewTransition(() => {
-      setTheme(newTheme)
-    })
-
-    await transition.ready
-
-    document.documentElement.animate(
-      {
-        clipPath: [
-          `circle(0px at ${x}px ${y}px)`,
-          `circle(${maxRadius}px at ${x}px ${y}px)`,
-        ],
-      },
-      {
-        duration: 500,
-        easing: "ease-in-out",
-        pseudoElement: "::view-transition-new(root)",
-      }
+  if (!mounted) {
+    return (
+      <nav className="fixed top-0 left-0 right-0 z-50 h-16">
+        <div className="mx-auto max-w-5xl h-full" />
+      </nav>
     )
   }
-
-  if (!mounted) return null
 
   return (
     <nav
@@ -117,126 +122,93 @@ export function Navigation() {
         isScrolled ? "bg-background/80 backdrop-blur-md" : "bg-transparent",
       )}
     >
+      {/* Top border line */}
       <div className="relative h-px w-full overflow-hidden">
         <div
-          className={cn(
-            "absolute inset-y-0 left-1/2 -translate-x-1/2 h-full bg-border transition-all duration-500"
-          )}
-          style={{ width: isScrolled ? "100%" : "1024px", maxWidth: isScrolled ? "100%" : "100%" }}
+          className="absolute inset-y-0 left-1/2 -translate-x-1/2 h-full bg-border transition-all duration-500"
+          style={{ width: isScrolled ? "100%" : "1024px" }}
         />
       </div>
-      <div className="mx-auto max-w-5xl lg:border-x border-border">
 
-        <div className="flex items-center justify-between p-4">
+      <div className="mx-auto max-w-5xl lg:border-x border-border">
+        <div className="flex items-center justify-between h-14 px-4">
+          {/* Logo */}
           <button
             onClick={() => scrollToSection("hero")}
-            data-cursor="HOME"
-            className="text-sm font-medium text-foreground transition-opacity duration-200 ease-out hover:opacity-70 focus:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-sm"
+            className="flex items-center gap-2 text-foreground transition-opacity duration-200 hover:opacity-70 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-sm"
             aria-label="Go to home"
           >
             <JSLogo className="size-6" />
           </button>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-1">
-            {navItems.slice(1).map((item) => (
-              <button
-                key={item.id}
-                onClick={() => scrollToSection(item.id)}
-                data-cursor="SCROLL"
-                className={cn(
-                  "relative px-3 py-1.5 text-xs transition-all duration-200 ease-out rounded-sm",
-                  "focus:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:ring-offset-2 focus-visible:ring-offset-background",
-                  activeSection === item.id ? "text-foreground" : "text-muted-foreground hover:text-foreground",
-                )}
-              >
-                {item.label}
-                <span
+          <div className="hidden md:flex items-center">
+            <div className="flex items-center gap-0.5 rounded-full bg-muted/50 p-1">
+              {navItems.slice(1).map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => scrollToSection(item.id)}
                   className={cn(
-                    "absolute inset-x-3 -bottom-0.5 h-px bg-foreground transition-all duration-200 ease-out",
-                    activeSection === item.id ? "opacity-100 scale-x-100" : "opacity-0 scale-x-0",
+                    "relative px-3 py-1.5 text-xs font-medium rounded-full transition-all duration-200",
+                    "focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1",
+                    activeSection === item.id
+                      ? "bg-background text-foreground shadow-sm"
+                      : "text-muted-foreground hover:text-foreground hover:bg-background/50",
                   )}
-                />
-              </button>
-            ))}
-            
-            <div className="ml-2 pl-2 border-l border-border">
-               <Button
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
+
+            {/* Theme Toggle */}
+            <div className="ml-3 pl-3 border-l border-border">
+              <Button
                 variant="ghost"
                 size="icon"
-                className="group/toggle extend-touch-target size-8"
+                className="size-8 rounded-full"
                 onClick={toggleTheme}
+                aria-label={`Switch to ${resolvedTheme === "dark" ? "light" : "dark"} mode`}
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="size-4.5"
-                >
-                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                  <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
-                  <path d="M12 3l0 18" />
-                  <path d="M12 9l4.65 -4.65" />
-                  <path d="M12 14.3l7.37 -7.37" />
-                  <path d="M12 19.6l8.85 -8.85" />
-                </svg>
-                <span className="sr-only">Toggle theme</span>
+                <Sun className="size-4 rotate-0 scale-100 transition-transform duration-200 dark:-rotate-90 dark:scale-0" />
+                <Moon className="absolute size-4 rotate-90 scale-0 transition-transform duration-200 dark:rotate-0 dark:scale-100" />
               </Button>
             </div>
           </div>
 
           {/* Mobile Navigation */}
-          <div className="flex md:hidden items-center gap-2">
-             <Button
-                variant="ghost"
-                size="icon"
-                className="group/toggle extend-touch-target size-8"
-                onClick={toggleTheme}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="size-4.5"
-                >
-                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                  <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
-                  <path d="M12 3l0 18" />
-                  <path d="M12 9l4.65 -4.65" />
-                  <path d="M12 14.3l7.37 -7.37" />
-                  <path d="M12 19.6l8.85 -8.85" />
-                </svg>
-                <span className="sr-only">Toggle theme</span>
-              </Button>
+          <div className="flex md:hidden items-center gap-1">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="size-8 rounded-full"
+              onClick={toggleTheme}
+              aria-label={`Switch to ${resolvedTheme === "dark" ? "light" : "dark"} mode`}
+            >
+              <Sun className="size-4 rotate-0 scale-100 transition-transform duration-200 dark:-rotate-90 dark:scale-0" />
+              <Moon className="absolute size-4 rotate-90 scale-0 transition-transform duration-200 dark:rotate-0 dark:scale-100" />
+            </Button>
+
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="size-8">
-                  <Menu className="size-4.5" />
+                <Button variant="ghost" size="icon" className="size-8 rounded-full">
+                  <Menu className="size-4" />
                   <span className="sr-only">Open menu</span>
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-[300px] sm:w-[400px]">
+              <SheetContent side="right" className="w-72">
                 <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
-                <nav className="flex flex-col gap-4 mt-8">
+                <nav className="flex flex-col gap-1 mt-8">
                   {navItems.map((item) => (
                     <button
                       key={item.id}
                       onClick={() => scrollToSection(item.id)}
                       className={cn(
-                        "text-left text-lg font-medium transition-colors duration-200 ease-out hover:text-foreground focus-visible:ring-[3px] focus-visible:ring-ring/50 rounded-sm",
-                        activeSection === item.id ? "text-foreground" : "text-muted-foreground"
+                        "flex items-center px-3 py-2.5 text-sm font-medium rounded-lg transition-all duration-200",
+                        "focus:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                        activeSection === item.id
+                          ? "bg-muted text-foreground"
+                          : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
                       )}
                     >
                       {item.label}
@@ -247,14 +219,13 @@ export function Navigation() {
             </Sheet>
           </div>
         </div>
-
       </div>
+
+      {/* Bottom border line */}
       <div className="relative h-px w-full overflow-hidden">
         <div
-          className={cn(
-            "absolute inset-y-0 left-1/2 -translate-x-1/2 h-full bg-border transition-all duration-500"
-          )}
-          style={{ width: isScrolled ? "100%" : "1024px", maxWidth: isScrolled ? "100%" : "100%" }}
+          className="absolute inset-y-0 left-1/2 -translate-x-1/2 h-full bg-border transition-all duration-500"
+          style={{ width: isScrolled ? "100%" : "1024px" }}
         />
       </div>
     </nav>
