@@ -28,37 +28,37 @@ export function ContactCard({
 	return (
 		<div
 			className={cn(
-				"relative grid h-full w-full border md:grid-cols-2 lg:grid-cols-3",
+				"relative grid h-full w-full border border-border md:grid-cols-2 lg:grid-cols-3",
 				className
 			)}
 			{...props}
 		>
 			<PlusIcon
-				className="-top-[12.5px] -left-[12.5px] absolute h-6 w-6"
+				className="absolute -top-[12.5px] -left-[12.5px] size-6 text-muted-foreground"
 				strokeWidth={1}
 			/>
 			<PlusIcon
-				className="-top-[12.5px] -right-[12.5px] absolute h-6 w-6"
+				className="absolute -top-[12.5px] -right-[12.5px] size-6 text-muted-foreground"
 				strokeWidth={1}
 			/>
 			<PlusIcon
-				className="-bottom-[12.5px] -left-[12.5px] absolute h-6 w-6"
+				className="absolute -bottom-[12.5px] -left-[12.5px] size-6 text-muted-foreground"
 				strokeWidth={1}
 			/>
 			<PlusIcon
-				className="-right-[12.5px] -bottom-[12.5px] absolute h-6 w-6"
+				className="absolute -right-[12.5px] -bottom-[12.5px] size-6 text-muted-foreground"
 				strokeWidth={1}
 			/>
 
-			<div className="col-span-1 flex flex-col justify-between bg-secondary/50 lg:col-span-2 dark:bg-background">
+			<div className="col-span-1 flex flex-col justify-between bg-secondary/50 dark:bg-background lg:col-span-2">
 				<div className="relative h-full space-y-4 px-4 py-8 md:p-8">
-					<h1 className="font-semibold text-3xl md:text-4xl lg:text-5xl">
+					<h2 className="text-2xl font-semibold md:text-3xl">
 						{title}
-					</h1>
-					<p className="max-w-xl text-muted-foreground text-sm md:text-base lg:text-lg">
+					</h2>
+					<p className="max-w-xl text-sm text-muted-foreground">
 						{description}
 					</p>
-					<div className="grid gap-4 md:grid md:grid-cols-2 lg:grid-cols-3">
+					<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
 						{contactInfo?.map((info) => (
 							<ContactInfo key={info.label} {...info} />
 						))}
@@ -67,7 +67,7 @@ export function ContactCard({
 			</div>
 			<div
 				className={cn(
-					"col-span-1 flex h-full w-full items-center border-t bg-card px-4 py-8 md:border-t-0 md:border-l dark:bg-card/50",
+					"col-span-1 flex h-full w-full items-center border-t border-border bg-card px-4 py-8 md:border-t-0 md:border-l dark:bg-card/50",
 					formSectionClassName
 				)}
 			>
@@ -86,12 +86,12 @@ function ContactInfo({
 }: ContactInfoProps) {
 	return (
 		<div className={cn("flex items-center gap-3 py-3", className)} {...props}>
-			<div className="rounded-lg border bg-card p-3 shadow">
-				<Icon className="h-5 w-5" />
+			<div className="rounded-lg border border-border bg-card p-3 shadow-sm">
+				<Icon className="size-5" />
 			</div>
 			<div>
-				<p className="font-medium">{label}</p>
-				<p className="text-muted-foreground text-xs">{value}</p>
+				<p className="text-sm font-medium">{label}</p>
+				<p className="text-xs text-muted-foreground">{value}</p>
 			</div>
 		</div>
 	);

@@ -76,16 +76,16 @@ export function GitHubSection() {
     <section ref={ref} id="github" className="relative scroll-mt-24">
       <div className="grid grid-cols-6 gap-6 p-4">
         <div
-          className={`col-span-6 md:col-span-2 pt-4 transition-all duration-500 ease-out ${
+          className={`col-span-6 md:col-span-2 py-4 transition-all duration-500 ease-out ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-1.5"
           }`}
         >
-          <span className="text-muted-foreground text-xs uppercase tracking-widest">GitHub Activity</span>
+          <span className="text-xs font-mono uppercase tracking-wider text-muted-foreground">GitHub Activity</span>
         </div>
         <div className="col-span-6 md:col-span-4 py-4">
           <div
             data-cursor="GITHUB"
-            className={`rounded-md border border-border p-4 bg-card/30 transition-all duration-500 ease-out hover:bg-card/50 hover:border-muted-foreground/30 focus-within:ring-2 focus-within:ring-ring ${
+            className={`rounded-md border border-border p-4 bg-card/30 transition-all duration-200 ease-out hover:bg-card/50 hover:border-muted-foreground/30 focus-within:ring-[3px] focus-within:ring-ring/50 ${
               graphVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
             }`}
           >
@@ -108,7 +108,7 @@ export function GitHubSection() {
                       className={`aspect-square rounded-sm cursor-pointer
                         transition-all duration-200 ease-out
                         ${getCellColor(contribution.contributionCount)}
-                        ${hoveredCell === i ? "scale-150 z-10 ring-1 ring-foreground/20" : ""}
+                        ${hoveredCell === i ? "scale-125 z-10 ring-1 ring-foreground/20" : ""}
                         ${graphVisible ? "opacity-100 scale-100" : "opacity-0 scale-0"}
                       `}
                       style={{
@@ -119,11 +119,11 @@ export function GitHubSection() {
                   ))}
                 </div>
                 <div className="mt-3 flex items-center justify-between text-xs text-muted-foreground">
-                  <span className={`transition-opacity duration-300 ${graphVisible ? "opacity-100" : "opacity-0"}`}>
+                  <span className={`font-mono transition-opacity duration-200 ${graphVisible ? "opacity-100" : "opacity-0"}`}>
                     {githubData && `${githubData.totalContributions} contributions in the last year`}
                   </span>
                   <span
-                    className={`font-mono transition-all duration-150 ${
+                    className={`font-mono transition-all duration-200 ease-out ${
                       hoveredCell !== null ? "opacity-100 translate-x-0" : "opacity-0 translate-x-2"
                     }`}
                   >

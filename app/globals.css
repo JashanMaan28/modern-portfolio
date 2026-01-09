@@ -3,7 +3,43 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* Updated to dark theme by default with proper neutral colors */
+/* =============================================================================
+   DESIGN SYSTEM TOKENS
+   =============================================================================
+
+   SPACING:
+   - Section padding: p-4
+   - Grid gap: gap-6
+   - Card content: px-6, py-6
+
+   TYPOGRAPHY:
+   - H1 (Hero): text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight
+   - H2 (Section labels): text-xs font-mono uppercase tracking-wider text-muted-foreground
+   - H3 (Card titles): text-base font-medium
+   - Body: text-sm text-muted-foreground
+   - Small/technical: text-xs font-mono text-muted-foreground
+
+   ANIMATION TIMING:
+   - Section reveals: duration-500 ease-out
+   - Hover interactions: duration-200 ease-out
+   - Stagger delays: 100ms increments
+
+   BORDERS:
+   - Use border-border for all borders (auto-switches with theme)
+   - Use border-foreground/5 for subtle decorative elements
+
+   FOCUS RINGS:
+   - Standard: focus-visible:ring-[3px] focus-visible:ring-ring/50
+
+   SHADOWS:
+   - Card hover: hover:shadow-lg hover:shadow-black/10
+
+   SCALE TRANSFORMS:
+   - Buttons: hover:scale-105 active:scale-95
+   - Badges/icons: hover:scale-110
+   - Cards: No scale, use shadow instead
+
+   ============================================================================= */
 :root {
   --background: oklch(0.9848 0.0013 106.4200);
   --foreground: oklch(0.1480 0.0050 24);

@@ -70,23 +70,21 @@ export function Footer() {
 		<footer className="relative">
 			<div
 				className={cn(
-					"mx-auto max-w-5xl lg:border-x",
-					"dark:bg-[radial-gradient(35%_80%_at_30%_0%,--theme(--color-foreground/.1),transparent)]"
+					"mx-auto max-w-5xl lg:border-x border-border",
+					"dark:bg-[radial-gradient(35%_80%_at_30%_0%,var(--foreground)/.05,transparent)]"
 				)}
 			>
 				<div className="absolute left-1/2 -translate-x-1/2 top-0 h-px bg-border pointer-events-none -z-10" style={{ width: "100vw" }} />
-				<div className="grid max-w-5xl grid-cols-6 gap-6 p-4">
-					<div className="col-span-6 flex flex-col gap-4 pt-5 md:col-span-4">
-						<a className="w-max" href="#">
-							<button
-								onClick={() => scrollToSection("hero")}
-								data-cursor="HOME"
-								className="font-medium text-foreground text-sm transition-opacity duration-200 hover:opacity-70 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-sm"
-							>
-								JS
-							</button>
-						</a>
-						<p className="max-w-sm text-balance font-mono text-muted-foreground text-sm">
+				<div className="grid grid-cols-6 gap-6 p-4">
+					<div className="col-span-6 md:col-span-4 flex flex-col gap-4 py-4">
+						<button
+							onClick={() => scrollToSection("hero")}
+							data-cursor="HOME"
+							className="w-max text-sm font-medium text-foreground transition-opacity duration-200 ease-out hover:opacity-70 focus:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-sm"
+						>
+							JS
+						</button>
+						<p className="max-w-sm text-sm font-mono text-muted-foreground text-balance">
 							Open for opportunities and collaboration.
 						</p>
 						<div className="flex gap-2">
@@ -95,6 +93,7 @@ export function Footer() {
 									key={`social-${item.link}-${index}`}
 									size="icon-sm"
 									variant="outline"
+									asChild
 								>
 									<a href={item.link} target="_blank" rel="noreferrer">
 										<item.icon className="size-3.5" />
@@ -103,13 +102,13 @@ export function Footer() {
 							))}
 						</div>
 					</div>
-					<div className="col-span-3 w-full md:col-span-1">
-						<span className="text-muted-foreground text-xs">Links</span>
+					<div className="col-span-3 md:col-span-1 w-full py-4">
+						<span className="text-xs font-mono uppercase tracking-wider text-muted-foreground">Links</span>
 						<div className="mt-2 flex flex-col gap-2">
 							{links.map(({ section, title }) => (
 								<button
 									data-cursor="SCROLL"
-									className="w-max text-left text-sm hover:underline"
+									className="w-max text-left text-sm transition-colors duration-200 ease-out hover:text-foreground hover:underline text-muted-foreground focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-sm"
 									onClick={() => scrollToSection(section)}
 									key={title}
 								>
@@ -118,13 +117,13 @@ export function Footer() {
 							))}
 						</div>
 					</div>
-					<div className="col-span-3 w-full md:col-span-1">
-						<span className="text-muted-foreground text-xs">Resources</span>
+					<div className="col-span-3 md:col-span-1 w-full py-4">
+						<span className="text-xs font-mono uppercase tracking-wider text-muted-foreground">Resources</span>
 						<div className="mt-2 flex flex-col gap-2">
 							{resources.map(({ href, title }) => (
 								<a
 									data-cursor="OPEN"
-									className="w-max text-sm hover:underline"
+									className="w-max text-sm transition-colors duration-200 ease-out hover:text-foreground hover:underline text-muted-foreground focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-sm"
 									href={href}
 									key={title}
 								>
@@ -135,8 +134,8 @@ export function Footer() {
 					</div>
 				</div>
 				<div className="absolute left-1/2 -translate-x-1/2 h-px bg-border pointer-events-none" style={{ width: "100vw" }} />
-				<div className="flex max-w-4xl flex-col justify-between gap-2 py-4">
-					<p className="text-center font-light text-muted-foreground text-sm">
+				<div className="flex flex-col justify-between gap-2 py-4 px-4">
+					<p className="text-center text-sm text-muted-foreground">
 						&copy; {new Date().getFullYear()} Jashanpreet Singh, All rights reserved
 					</p>
 				</div>

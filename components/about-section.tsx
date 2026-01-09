@@ -11,12 +11,12 @@ export function AboutSection() {
     <section ref={ref} id="about" className="relative scroll-mt-24">
       <div className="grid grid-cols-6 gap-6 p-4">
         <div
-          className={`col-span-6 md:col-span-2 pt-4 transition-all duration-500 ease-out flex items-center gap-2 ${
+          className={`col-span-6 md:col-span-2 py-4 transition-all duration-500 ease-out flex items-center gap-2 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-1.5"
           }`}
         >
           <Crosshair className="relative" delay={200} />
-          <span className="text-muted-foreground text-xs uppercase tracking-widest pl-6">About</span>
+          <span className="text-xs font-mono uppercase tracking-wider text-muted-foreground pl-6">About</span>
         </div>
         <div
           className={`col-span-6 md:col-span-4 py-4 transition-all duration-500 ease-out delay-100 ${

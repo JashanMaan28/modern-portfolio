@@ -4,23 +4,20 @@ import { ProjectsSection } from "@/components/projects-section"
 import { SkillsSection } from "@/components/skills-section"
 import { GitHubSection } from "@/components/github-section"
 import { CertificatesSection } from "@/components/certificates-section"
-// import { ContactFooter } from "@/components/contact-footer"
 import { ContactCard } from "@/components/contact-card"
 import { Navigation } from "@/components/navigation"
 import { SmartCursor } from "@/components/smart-cursor"
-// import { CustomCursor } from "@/components/custom-cursor"
 import { cn } from "@/lib/utils"
 import { Footer } from "@/components/footer"
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { MailIcon, MapPinIcon, PhoneIcon } from "lucide-react";
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
+import { MailIcon, MapPinIcon, PhoneIcon } from "lucide-react"
 
 export default function Home() {
   return (
     <main className="min-h-screen text-foreground">
-      {/* <CustomCursor /> */}
       <SmartCursor />
       <Navigation />
       <div

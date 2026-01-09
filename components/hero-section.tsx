@@ -51,7 +51,7 @@ export function HeroSection() {
               size="sm"
               onClick={() => scrollToSection("projects")}
               data-cursor="VIEW"
-              className="transition-all duration-200 hover:scale-105 hover:bg-foreground/5 active:scale-95 bg-transparent focus-visible:ring-ring focus-visible:ring-offset-background"
+              className="transition-all duration-200 ease-out hover:scale-105 active:scale-95 bg-transparent"
             >
               View Projects
             </Button>
@@ -59,7 +59,7 @@ export function HeroSection() {
               size="sm"
               onClick={() => scrollToSection("contact")}
               data-cursor="CONTACT"
-              className="transition-all duration-200 hover:scale-105 active:scale-95 focus-visible:ring-ring focus-visible:ring-offset-background"
+              className="transition-all duration-200 ease-out hover:scale-105 active:scale-95"
             >
               Contact
             </Button>

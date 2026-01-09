@@ -68,9 +68,13 @@ export function Navigation() {
 
   const toggleTheme = async (e: React.MouseEvent<HTMLButtonElement>) => {
     const newTheme = theme === "dark" ? "light" : "dark"
-    
-    // @ts-ignore
-    if (!document.startViewTransition) {
+
+    // View Transition API - experimental, fallback to instant switch if unsupported
+    const doc = document as Document & {
+      startViewTransition?: (callback: () => void) => { ready: Promise<void> }
+    }
+
+    if (!doc.startViewTransition) {
       setTheme(newTheme)
       return
     }
@@ -83,8 +87,7 @@ export function Navigation() {
     const bottom = window.innerHeight - top
     const maxRadius = Math.hypot(Math.max(left, right), Math.max(top, bottom))
 
-    // @ts-ignore
-    const transition = document.startViewTransition(() => {
+    const transition = doc.startViewTransition(() => {
       setTheme(newTheme)
     })
 
@@ -128,7 +131,7 @@ export function Navigation() {
           <button
             onClick={() => scrollToSection("hero")}
             data-cursor="HOME"
-            className="font-medium text-foreground text-sm transition-opacity duration-200 hover:opacity-70 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-sm"
+            className="text-sm font-medium text-foreground transition-opacity duration-200 ease-out hover:opacity-70 focus:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-sm"
             aria-label="Go to home"
           >
             <JSLogo className="size-6" />
@@ -142,15 +145,15 @@ export function Navigation() {
                 onClick={() => scrollToSection(item.id)}
                 data-cursor="SCROLL"
                 className={cn(
-                  "relative px-3 py-1.5 text-xs transition-all duration-200 rounded-sm",
-                  "focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+                  "relative px-3 py-1.5 text-xs transition-all duration-200 ease-out rounded-sm",
+                  "focus:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:ring-offset-2 focus-visible:ring-offset-background",
                   activeSection === item.id ? "text-foreground" : "text-muted-foreground hover:text-foreground",
                 )}
               >
                 {item.label}
                 <span
                   className={cn(
-                    "absolute inset-x-3 -bottom-0.5 h-px bg-foreground transition-all duration-300",
+                    "absolute inset-x-3 -bottom-0.5 h-px bg-foreground transition-all duration-200 ease-out",
                     activeSection === item.id ? "opacity-100 scale-x-100" : "opacity-0 scale-x-0",
                   )}
                 />
@@ -232,7 +235,7 @@ export function Navigation() {
                       key={item.id}
                       onClick={() => scrollToSection(item.id)}
                       className={cn(
-                        "text-left text-lg font-medium transition-colors hover:text-primary",
+                        "text-left text-lg font-medium transition-colors duration-200 ease-out hover:text-foreground focus-visible:ring-[3px] focus-visible:ring-ring/50 rounded-sm",
                         activeSection === item.id ? "text-foreground" : "text-muted-foreground"
                       )}
                     >
