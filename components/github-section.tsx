@@ -56,7 +56,7 @@ export function GitHubSection() {
   }, [isVisible, loading])
 
   const getCellColor = (count: number) => {
-    if (count === 0) return "bg-slate-300/30"
+    if (count === 0) return "bg-muted-foreground/10"
     if (count < 3) return "bg-emerald-700/60"
     if (count < 6) return "bg-emerald-600/80"
     return "bg-emerald-500"
